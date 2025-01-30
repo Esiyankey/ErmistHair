@@ -2,6 +2,8 @@
 
 import { LiaAngleRightSolid } from "react-icons/lia";
 import { FaHome } from "react-icons/fa";
+import Link from "next/link";
+import {FaShoppingCart } from "react-icons/fa";
 import * as React from "react";
 import Image from "next/image";
 import {
@@ -13,6 +15,7 @@ import {
 } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 
 interface HeroSlide {
   image: string;
@@ -112,7 +115,7 @@ export const Landing = () => {
                     </div>
                   </div>
                 </div>
-                <div>
+                <div className="hidden xl:block ">
                   <Image
                     src="/images/hero-hair-image.png"
                     objectFit="cover"
@@ -140,7 +143,7 @@ export const Landing = () => {
       </div>
 
       <div className="h-[2px] bg-gray-100 rounded-sm mx-auto max-w-7xl mb-3"></div>
-      <div className="my-8 max-w-7xl  mx-auto">
+      <div className="my-8 max-w-7xl  mx-auto  md:ml-4">
         <h3 className="text-4xl font-bold mb-4 ">Collections</h3>
         <p className="text-sm text-gray-500 my-6">
           Unleash a new version of yourself with our stunning collection of high
@@ -168,10 +171,55 @@ export const Landing = () => {
               );
             })}
           </div>
-          <Button variant={"outline"} size={"lg"}>
+          <Button variant={"outline"} size={"lg"} className="md:mr-4">
             View More
           </Button>
         </div>
+      </div>
+
+      <div className="my-12 mx-12">
+        <Card className="w-72 ">
+          <CardHeader className="overflow-hidden h-60">
+            <Image
+              src="/images/bouncy-curls.jpg"
+              alt="image here"
+              width={240}
+              height={250}
+              className="bg-cover w-full "
+            />
+          </CardHeader>
+          <CardContent className="">
+            <div className="flex justify-between items-center">
+              <h1 className="">Bouncy curls</h1>
+              <h1>
+                $<span>78.70</span>
+              </h1>
+            </div>
+            <div className="grid grid-cols-2  gap-2 my-4 text-sm">
+              <p className="bg-gray-100 rounded-full px-3 py-1 text-center">
+                18
+              </p>
+              <p className="bg-gray-100 rounded-full px-3 py-1 text-center">
+                Frontal
+              </p>
+              <p className="bg-gray-100 rounded-full px-3 py-1 text-center">
+                Natural Black
+              </p>
+              <p className="bg-gray-100 rounded-full px-3 py-1 text-center">
+                Human hair 
+              </p>
+            </div>
+            <div className="hidden xl:block">
+            <Link
+              href="/cart"
+              className="flex items-center text-black hover:text-white transition-colors"
+            >
+              <FaShoppingCart className="h-6 w-6 mr-1 text-pink-600" />
+              <span>Cart</span>
+            </Link>
+          </div>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );

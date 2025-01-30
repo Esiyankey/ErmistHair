@@ -26,7 +26,7 @@ export default function Navbar() {
               </span>
             </Link>
           </div>
-          <div className="hidden md:block">
+          <div className="hidden xl:block">
             <div className="ml-10 flex items-baseline space-x-4">
               {navLinks.map((link) => (
                 <Link
@@ -39,7 +39,7 @@ export default function Navbar() {
               ))}
             </div>
           </div>
-          <div className="hidden md:block">
+          <div className="hidden xl:block">
             <Link
               href="/cart"
               className="flex items-center text-black hover:text-white transition-colors"
@@ -48,16 +48,16 @@ export default function Navbar() {
               <span>Cart</span>
             </Link>
           </div>
-          <div className="md:hidden flex items-center">
+          <div className="xl:hidden flex items-center">
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="inline-flex items-center justify-center p-2 rounded-md text-black hover:text-white hover:bg-pink-600 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-black"
+              className="inline-flex items-center justify-center p-2  rounded-md text-[#361a26]   focus:outline-none focus:border-none"
             >
               <span className="sr-only">Open main menu</span>
               {isMenuOpen ? (
-                <FaTimes className="block h-6 w-6" aria-hidden="true" />
+                <FaTimes className="block h-4 w-4" aria-hidden="true" />
               ) : (
-                <FaBars className="block h-6 w-6" aria-hidden="true" />
+                <FaBars className="block h-4 w-4" aria-hidden="true" />
               )}
             </button>
           </div>
@@ -66,13 +66,13 @@ export default function Navbar() {
 
       {/* Mobile menu, show/hide based on menu state */}
       {isMenuOpen && (
-        <div className="md:hidden">
+        <div className="xl:hidden">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className="block px-3 py-2 rounded-md text-base font-medium text-black hover:bg-pink-600 hover:text-white transition-colors"
+                className="block px-3 py-2 rounded-sm text-base font-medium text-black hover:bg-pink-600 hover:text-white transition-colors"
               >
                 {link.label}
               </Link>
