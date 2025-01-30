@@ -46,7 +46,7 @@
       "type": "Frontal",
       "color": "Chestnut Brown",
       "material": "Human Hair",
-      "image": "/images/hair frontal.jpg",
+      "image": "/images/hair-frontal.jpg",
       "category": "glueless"
     },
     {
@@ -56,7 +56,7 @@
       "type": "Closure",
       "color": "Natural Black",
       "material": "Human Hair",
-      "image": "/images/k-kim closure.jpg",
+      "image": "/images/k-kim-closure.jpg",
       "category": "invisible"
     },
     {
