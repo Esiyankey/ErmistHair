@@ -3,8 +3,9 @@
 import { LiaAngleRightSolid } from "react-icons/lia";
 import { FaHome } from "react-icons/fa";
 import Link from "next/link";
-import {FaShoppingCart } from "react-icons/fa";
-import * as React from "react";
+import { FaShoppingCart } from "react-icons/fa";
+import wigsData from "../../data/wigs.js";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import {
   Carousel,
@@ -46,13 +47,13 @@ const slides: HeroSlide[] = [
 ];
 
 export const Landing = () => {
-  const [activeButton, setActiveButton] = React.useState(1);
-  const plugin = React.useRef(
-    Autoplay({ delay: 5000, stopOnInteraction: true })
-  );
+  const [activeButton, setActiveButton] = useState(1);
+  const [wigs, setWigs] = useState(wigsData);
+  const [filteredWigs, setFilteredWigs] = useState(wigsData); // Store filtered data
+  const plugin = useRef(Autoplay({ delay: 5000, stopOnInteraction: true }));
   const buttons = [
     {
-      name: "Top Comfort",
+      name: "All",
       id: 1,
     },
     {
@@ -64,6 +65,18 @@ export const Landing = () => {
       id: 3,
     },
   ];
+
+  useEffect(() => {
+    let newFilteredWigs: typeof wigsData = [];
+    if (activeButton === 1) {
+      newFilteredWigs = wigs;
+    } else if (activeButton === 2) {
+      newFilteredWigs = wigs.filter((wig) => wig.category === "invisible");
+    } else if (activeButton === 3) {
+      newFilteredWigs = wigs.filter((wig) => wig.category === "glueless");
+    }
+    setFilteredWigs(newFilteredWigs); // Update the filtered state
+  }, [activeButton]);
 
   const handleOnclickButton = (index: number) => {
     setActiveButton(index);
@@ -95,10 +108,10 @@ export const Landing = () => {
                 >
                   <div className="absolute inset-0 bg-gradient-to-r from-pink-500/20 to-transparent" />
                 </div>
-                <div className="relative flex  h-full items-center">
+                <div className="relative flex h-full items-center">
                   <div className="container px-4 md:px-6">
-                    <div className="max-w-2xl space-y-4 ml-32 leading-loose">
-                      <h1 className="animate-fade-up font-serif leading-none text-7xl font-bold tracking-tighter text-[#4A1625] opacity-90 sm:text-6xl md:text-7xl">
+                    <div className="max-w-2xl space-y-4 ml-6 md:ml-32 leading-loose">
+                      <h1 className="animate-fade-up font-serif leading-normal  text-5xl font-bold tracking-tighter text-[#4A1625] opacity-90 sm:text-6xl md:text-7xl">
                         {slide.title}
                         <span className="block text-pink-600">
                           {slide.subtitle}
@@ -128,8 +141,8 @@ export const Landing = () => {
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious className="left-4" />
-        <CarouselNext className="right-4" />
+        <CarouselPrevious className="left-4 hidden md:flex" />
+        <CarouselNext className="right-4 hidden md:flex" />
       </Carousel>
 
       <div className="container mx-auto px-4 md:px-6 py-12 flex flex-col items-center space-y-8 text-center">
@@ -143,83 +156,88 @@ export const Landing = () => {
       </div>
 
       <div className="h-[2px] bg-gray-100 rounded-sm mx-auto max-w-7xl mb-3"></div>
-      <div className="my-8 max-w-7xl  mx-auto  md:ml-4">
-        <h3 className="text-4xl font-bold mb-4 ">Collections</h3>
-        <p className="text-sm text-gray-500 my-6">
-          Unleash a new version of yourself with our stunning collection of high
-          quality female wigs.
-          <br />
-          Dont miss out the chance to transform your style at unbeatable prices.{" "}
-        </p>
-        <div className="flex justify-between items-center">
-          <div className="flex gap-4 my-10 ">
-            {buttons.map((button) => {
-              return (
-                <Button
-                  onClick={() => handleOnclickButton(button.id)}
-                  className={
-                    activeButton === button.id
-                      ? "bg-pink-600 text-white text-sm"
-                      : ""
-                  }
-                  key={button.id}
-                  variant="outline"
-                  size={"lg"}
-                >
-                  {button.name}
-                </Button>
-              );
-            })}
-          </div>
-          <Button variant={"outline"} size={"lg"} className="md:mr-4">
-            View More
-          </Button>
-        </div>
-      </div>
 
-      <div className="my-12 mx-12">
-        <Card className="w-72 ">
-          <CardHeader className="overflow-hidden h-60">
-            <Image
-              src="/images/bouncy-curls.jpg"
-              alt="image here"
-              width={240}
-              height={250}
-              className="bg-cover w-full "
-            />
-          </CardHeader>
-          <CardContent className="">
-            <div className="flex justify-between items-center">
-              <h1 className="">Bouncy curls</h1>
-              <h1>
-                $<span>78.70</span>
-              </h1>
+      <div className="xl:max-w-7xl md:max-w-2xl w-full mx-auto">
+        <div className="my-8 mx-4 max-w-7xl  md:mx-auto  md:ml-4">
+          <h3 className="text-4xl font-bold mb-4 ">Collections</h3>
+          <p className="text-sm text-gray-500 my-6">
+            Unleash a new version of yourself with our stunning collection of
+            high quality female wigs.
+            <br />
+            Dont miss out the chance to transform your style at unbeatable
+            prices.{" "}
+          </p>
+          <div className="flex justify-between items-center">
+            <div className="flex gap-4 my-10 ">
+              {buttons.map((button) => {
+                return (
+                  <Button
+                    onClick={() => handleOnclickButton(button.id)}
+                    className={
+                      activeButton === button.id
+                        ? "bg-pink-600 text-white text-sm"
+                        : ""
+                    }
+                    key={button.id}
+                    variant="outline"
+                    size={"lg"}
+                  >
+                    {button.name}
+                  </Button>
+                );
+              })}
             </div>
-            <div className="grid grid-cols-2  gap-2 my-4 text-sm">
-              <p className="bg-gray-100 rounded-full px-3 py-1 text-center">
-                18
-              </p>
-              <p className="bg-gray-100 rounded-full px-3 py-1 text-center">
-                Frontal
-              </p>
-              <p className="bg-gray-100 rounded-full px-3 py-1 text-center">
-                Natural Black
-              </p>
-              <p className="bg-gray-100 rounded-full px-3 py-1 text-center">
-                Human hair 
-              </p>
-            </div>
-            <div className="hidden xl:block">
-            <Link
-              href="/cart"
-              className="flex items-center text-black hover:text-white transition-colors"
-            >
-              <FaShoppingCart className="h-6 w-6 mr-1 text-pink-600" />
-              <span>Cart</span>
-            </Link>
+            
+            <Button variant={"outline"} size={"lg"} className="md:mr-4 hidden md:flex">
+              View More
+            </Button>
           </div>
-          </CardContent>
-        </Card>
+        </div>
+
+        <div className="my-12 grid grid-cols-1 justify-center place-items-center md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+          {filteredWigs.map((wig, index) => {
+            return (
+              <Card className="md:w-72 w-96" key={index}>
+                <CardHeader className="overflow-hidden h-60">
+                  <Image
+                    src={wig.image}
+                    alt="image here"
+                    width={240}
+                    height={250}
+                    className="bg-cover w-full "
+                  />
+                </CardHeader>
+                <CardContent className="">
+                  <div className="flex justify-between items-center">
+                    <h1 className="">{wig.name}</h1>
+                    <h1>
+                      $<span>{wig.price}</span>
+                    </h1>
+                  </div>
+                  <div className="grid grid-cols-2  gap-2 my-4 text-sm">
+                    <p>{wig.length}inches</p>
+                    <p className=" text-end">{wig.type}</p>
+                    <p>{wig.color}</p>
+                    <p className="text-end">{wig.material}</p>
+                  </div>
+                  <div className=" my-4 flex justify-between items-center">
+                    <Link
+                      href="/cart"
+                      className="flex items-center text-black hover:text-white transition-colors"
+                    >
+                      <FaShoppingCart className="h-4 w-4 mr-1 text-pink-600" />
+                      <span className="text-xs">Add to Cart</span>
+                    </Link>
+                    <Button size="sm" className=" bg-pink-600">
+                      {" "}
+                      Order
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            );
+          })}
+        </div>
       </div>
     </div>
   );
