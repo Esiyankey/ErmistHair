@@ -76,6 +76,7 @@ export const Landing = () => {
       newFilteredWigs = wigs.filter((wig) => wig.category === "glueless");
     }
     setFilteredWigs(newFilteredWigs); // Update the filtered state
+    setWigs(wigsData); // Reset the wigs state
   }, [activeButton]);
 
   const handleOnclickButton = (index: number) => {
