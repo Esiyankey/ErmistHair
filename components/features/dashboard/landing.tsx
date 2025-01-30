@@ -142,8 +142,8 @@ export const Landing = () => {
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious className="left-4 hidden md:flex" />
-        <CarouselNext className="right-4 hidden md:flex" />
+        <CarouselPrevious className="left-4 " />
+        <CarouselNext className="right-4 " />
       </Carousel>
 
       <div className="container mx-auto px-4 md:px-6 py-12 flex flex-col items-center space-y-8 text-center">
@@ -188,8 +188,12 @@ export const Landing = () => {
                 );
               })}
             </div>
-            
-            <Button variant={"outline"} size={"lg"} className="md:mr-4 hidden md:flex">
+
+            <Button
+              variant={"outline"}
+              size={"lg"}
+              className="md:mr-4 hidden md:flex"
+            >
               View More
             </Button>
           </div>
@@ -198,7 +202,7 @@ export const Landing = () => {
         <div className="my-12 grid grid-cols-1 justify-center place-items-center md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {filteredWigs.map((wig, index) => {
             return (
-              <Card className="md:w-72 w-96" key={index}>
+              <Card className="md:w-72 w-80" key={index}>
                 <CardHeader className="overflow-hidden h-60">
                   <Image
                     src={wig.image}
