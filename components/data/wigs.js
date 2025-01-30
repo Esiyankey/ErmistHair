@@ -1,4 +1,4 @@
- const wigsData = [
+ export const wigsData = [
     {
       "name": "Bouncy Curls",
       "price": 78.70,
@@ -81,5 +81,42 @@
     },
     
   ]
+
+
   
-  export default wigsData;
+  
+  
+ 
+
+  export const wigsArivals = [
+    {
+      name: "HD Brazilian Sewing Machine Wigs",
+      price: 80,
+      imageUrl: "/images/bone-straight.jpg",
+    },
+    {
+      
+      name: "Brazilian Body Wave Lace Front Wig",
+      price: 120,
+      imageUrl: "/images/bouncy-curls.jpg",
+    },
+    {
+    
+      name: "Brazilian Deep Wave Lace Front Wig",
+      price: 150,
+      imageUrl: "/images/bun.jpg",
+    },
+    {
+      
+      name: "Blonde Straight Bob Wig",
+      price: 60,
+      imageUrl: "/images/curls.jpg",
+    },
+    {      
+      name: "Blonde Straight Bob Wig",
+      price: 85,
+      imageUrl: "/images/curls.jpg",
+    },
+  ]
+
+  

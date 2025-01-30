@@ -4,8 +4,9 @@ import { LiaAngleRightSolid } from "react-icons/lia";
 import { FaHome } from "react-icons/fa";
 import Link from "next/link";
 import { FaShoppingCart } from "react-icons/fa";
-import wigsData from "../../data/wigs.js";
+import { wigsArivals, wigsData } from "../../data/wigs.js";
 import { useState, useEffect, useRef } from "react";
+import { FaAngleRight, FaRegHeart, FaAngleLeft } from "react-icons/fa6";
 import Image from "next/image";
 import {
   Carousel,
@@ -49,8 +50,27 @@ const slides: HeroSlide[] = [
 export const Landing = () => {
   const [activeButton, setActiveButton] = useState(1);
   const [wigs, setWigs] = useState(wigsData);
+  const [wigArrival, setWigArrival] = useState(wigsArivals);
   const [filteredWigs, setFilteredWigs] = useState(wigsData); // Store filtered data
   const plugin = useRef(Autoplay({ delay: 5000, stopOnInteraction: true }));
+  const [startIndex, setStartIndex] = useState(0);
+
+  const nextSlide = () => {
+    setStartIndex((prev) => (prev + 1) % wigs.length);
+  };
+
+  const prevSlide = () => {
+    setStartIndex((prev) => (prev - 1 + wigs.length) % wigs.length);
+  };
+
+  const getVisibleWigs = () => {
+    return wigArrival
+      .slice(startIndex, startIndex + 4)
+      .concat(
+        wigArrival.slice(0, Math.max(4 - (wigArrival.length - startIndex), 0))
+      );
+  };
+
   const buttons = [
     {
       name: "All",
@@ -63,6 +83,14 @@ export const Landing = () => {
     {
       name: "Glueless",
       id: 3,
+    },
+    {
+      name: "Frontal",
+      id: 4,
+    },
+    {
+      name: "Closure",
+      id: 5,
     },
   ];
 
@@ -169,7 +197,7 @@ export const Landing = () => {
             prices.{" "}
           </p>
           <div className="flex justify-between items-center">
-            <div className="flex gap-4 my-10 ">
+            <div className="flex gap-4 my-10 mr-2">
               {buttons.map((button) => {
                 return (
                   <Button
@@ -199,7 +227,7 @@ export const Landing = () => {
           </div>
         </div>
 
-        <div className="my-12 grid grid-cols-1 justify-center place-items-center md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        <div className="md:my-12 my-6 grid grid-cols-1 justify-center place-items-center md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {filteredWigs.map((wig, index) => {
             return (
               <Card className="md:w-72 w-80" key={index}>
@@ -242,6 +270,114 @@ export const Landing = () => {
               </Card>
             );
           })}
+        </div>
+
+        <div>
+          <div className="relative max-w-[1400px] mx-auto px-4 py-8">
+            <div className="flex justify-between items-center mb-8">
+              <h2 className="text-2xl font-medium text-gray-800">
+                Recent Arrivals
+              </h2>
+              <div className="flex gap-4">
+                <Button
+                  variant="outline"
+                  size="icon"
+                  onClick={prevSlide}
+                  className="hidden md:flex h-8 w-8 border border-gray-300"
+                >
+                  <FaAngleLeft className="h-4 w-4" />
+                </Button>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  onClick={nextSlide}
+                  className="hidden md:flex h-8 w-8 border border-gray-300"
+                >
+                  <FaAngleRight className="h-4 w-4" />
+                </Button>
+              </div>
+            </div>
+
+            <div className="relative overflow-hidden">
+              <div className="flex transition-transform duration-300 ease-in-out">
+                {/* Mobile View */}
+                <div className="md:hidden w-full">
+                  <div className="relative">
+                    <div className="relative aspect-[3/4] w-full overflow-hidden">
+                      <Image
+                        src={
+                          wigArrival[startIndex].imageUrl || "/placeholder.svg"
+                        }
+                        alt={wigArrival[startIndex].name}
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 768px) 100vw, 25vw"
+                      />
+                      <button className="absolute top-2 right-2 p-2 rounded-full bg-white/80 backdrop-blur-sm">
+                        <FaRegHeart className="h-5 w-5 fill-red-500 stroke-red-500" />
+                      </button>
+                    </div>
+                    <div className="mt-2">
+                      <h3 className="text-sm font-medium text-gray-900">
+                        {wigArrival[startIndex].name}
+                      </h3>
+                      <p className="mt-1 text-sm font-semibold text-gray-900">
+                        ${wigArrival[startIndex].price.toLocaleString()}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Desktop View */}
+                <div className="hidden md:grid md:grid-cols-4 max-w-7xl gap-6">
+                  {getVisibleWigs().map((wig, index) => (
+                    <div key={index} className="relative">
+                      <div className="relative aspect-[3/4] w-full overflow-hidden">
+                        <Image
+                          src={wig.imageUrl || "/placeholder.svg"}
+                          alt={wig.name}
+                          fill
+                          className="object-cover"
+                          sizes="(max-width: 768px) 100vw, 25vw"
+                        />
+                        <button className="absolute top-2 right-2 p-2 rounded-full bg-white/80 backdrop-blur-sm">
+                          <FaRegHeart className="h-5 w-5 fill-red-500 stroke-red-500" />
+                        </button>
+                      </div>
+                      <div className="mt-2">
+                        <h3 className="text-sm font-medium text-gray-900">
+                          {wig.name}
+                        </h3>
+                        <p className="mt-1 text-sm font-semibold text-gray-900">
+                          ${wig.price.toLocaleString()}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Mobile Navigation Buttons */}
+              <div className="md:hidden flex justify-between absolute top-1/2 -translate-y-1/2 left-0 right-0">
+                <Button
+                  variant="outline"
+                  size="icon"
+                  onClick={prevSlide}
+                  className="transform -translate-x-1/2 bg-white/80 backdrop-blur-sm h-8 w-8 border border-gray-300"
+                >
+                  <FaAngleLeft className="h-4 w-4" />
+                </Button>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  onClick={nextSlide}
+                  className="transform translate-x-1/2 bg-white/80 backdrop-blur-sm h-8 w-8 border border-gray-300"
+                >
+                  <FaAngleRight className="h-4 w-4" />
+                </Button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
