@@ -94,7 +94,7 @@ export const Landing = () => {
   const getTotalCount = () => {
     return Object.values(counts).reduce((total, count) => total + count, 0);
   };
-  
+
   const nextSlide = () => {
     setStartIndex((prev) => (prev + 1) % wigs.length);
   };
@@ -283,7 +283,7 @@ export const Landing = () => {
         <div className="md:my-12 my-6 grid grid-cols-1 justify-center place-items-center md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {filteredWigs.map((wig) => {
             return (
-              <Card className="md:w-72 w-80" key={wig.id}>
+              <Card className="md:w-72 w-96" key={wig.id}>
                 <CardHeader className="overflow-hidden h-60">
                   <Image
                     src={wig.image}
