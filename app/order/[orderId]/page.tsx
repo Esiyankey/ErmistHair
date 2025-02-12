@@ -5,6 +5,8 @@
 import { useEffect, useState } from "react"
 import { useParams } from "next/navigation";
 import { wigsData } from "@/components/data/wigs";
+import { IoIosArrowRoundBack } from "react-icons/io";
+import Link from "next/link";
 
 const wigTypes = ["Full Lace Wig", "Lace Front Wig", "U-Part Wig", "360 Lace Wig", "Glueless Wig", "HD Lace Wig"]
 
@@ -69,6 +71,9 @@ export default function OrderForm() {
 
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4">
+        <Link href="/" className="h-8 w-8 rounded-full border flex justify-center items-center ">
+            <IoIosArrowRoundBack />
+        </Link>
       <div className="max-w-2xl mx-auto bg-white shadow-md rounded-lg overflow-hidden">
         <div className="text-center py-6 bg-[#e75e8d]">
           <h1 className="text-3xl font-bold text-white">Ermist Hair</h1>
