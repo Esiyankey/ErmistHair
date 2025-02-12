@@ -91,9 +91,9 @@ export const Landing = () => {
     ) )
   }
 
-  const getTotalCount = () => {
-    return Object.values(counts).reduce((total, count) => total + count, 0);
-  };
+  // const getTotalCount = () => {
+  //   return Object.values(counts).reduce((total, count) => total + count, 0);
+  // };
 
   const nextSlide = () => {
     setStartIndex((prev) => (prev + 1) % wigs.length);
