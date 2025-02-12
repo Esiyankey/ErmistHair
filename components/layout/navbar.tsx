@@ -5,7 +5,7 @@ import Link from "next/link";
 import { FaBars, FaTimes, FaShoppingCart } from "react-icons/fa";
 
 const navLinks = [
-  { href: "/shop", label: "Shop All" },
+  { href: "/admin", label: "Shop All" },
   { href: "/custom", label: "Custom Wigs" },
   { href: "/styles", label: "Styles" },
   { href: "/care", label: "Wig Care" },
