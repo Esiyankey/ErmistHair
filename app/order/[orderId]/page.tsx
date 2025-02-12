@@ -36,7 +36,7 @@ export default function OrderForm() {
             }
         });
 
-    },[]);
+    });
 
 
   const [formData, setFormData] = useState({
