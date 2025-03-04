@@ -6,7 +6,7 @@ import { FaBars, FaTimes, FaShoppingCart } from "react-icons/fa";
 
 const navLinks = [
   { href: "/admin", label: "Shop All" },
-  { href: "/custom", label: "Custom Wigs" },
+  { href: "/orders", label: "orders" },
   { href: "/styles", label: "Styles" },
   { href: "/care", label: "Wig Care" },
   { href: "/faq", label: "FAQ" },
@@ -16,8 +16,8 @@ export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <nav className=" text-black">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <nav className=" text-black ">
+      <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-12">
           <div className="flex items-center">
             <Link href="/" className="flex-shrink-0">
@@ -48,6 +48,11 @@ export default function Navbar() {
               <span>Cart</span>
             </Link>
           </div>
+          <button className="hidden xl:block px-4 py-2 rounded-md text-sm font-medium text-white bg-pink-600 hover:bg-pink-700">
+            <Link href="/auth/signUp" className="text-white">
+              Register
+            </Link>
+          </button>
           <div className="xl:hidden flex items-center">
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
