@@ -1,15 +1,21 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { useRouter } from "next/navigation"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import * as z from "zod"
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
 
-import { Button } from "@/components/ui/button"
-import { Form, FormControl, FormField, FormItem, FormMessage } from "../../../components/ui/form"
-import { Input } from "@/components/ui/input"
-import { toast } from "@/components/ui/use-toast"
+import { Button } from "@/components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "../../../components/ui/form";
+import { Input } from "@/components/ui/input";
+import { toast } from "@/components/ui/use-toast";
 
 const formSchema = z.object({
   email: z.string().email({
@@ -18,11 +24,11 @@ const formSchema = z.object({
   password: z.string().min(1, {
     message: "Password is required.",
   }),
-})
+});
 
 export function LoginForm() {
-  const router = useRouter()
-  const [isLoading, setIsLoading] = useState(false)
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -30,22 +36,28 @@ export function LoginForm() {
       email: "",
       password: "",
     },
-  })
+  });
 
   async function onSubmit() {
-    setIsLoading(true)
-    try{
-
-      const fetchResponse = await fetch("http://localhost:3030/api/v1/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(form.getValues()),
-      })
+    setIsLoading(true);
+    try {
+      const fetchResponse = await fetch(
+        "http://localhost:3030/api/v1/auth/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(form.getValues()),
+        }
+      );
       const data = await fetchResponse.json();
 
-      
+      console.log("Full response:", data);
+      console.log("User object:", data.user);
+      console.log("User role:", data.user?.role);
+      console.log("Token:", data.token);
+
       if (!fetchResponse.ok) {
         throw new Error(data.error || "Something went wrong");
       }
@@ -54,12 +66,11 @@ export function LoginForm() {
         // Save token
         localStorage.setItem("token", data.token);
 
-        console.log(data.User.role)
+        console.log(data.user?.role);
         // Redirect based on user role
-        if (data.role === "admin") {
+        if (data.user?.role === "admin") {
           router.push("/admin");
-        } else {
-          router.push("/");
+          router.refresh();
         }
       } else {
         alert(data.message);
@@ -71,8 +82,7 @@ export function LoginForm() {
         title: "Account created successfully",
         description: "You can now log in with your new account.",
       });
-    }
-    catch (error) {
+    } catch (error) {
       toast({
         title: "Error",
         description: (error as Error).message,
@@ -82,9 +92,6 @@ export function LoginForm() {
       setIsLoading(false);
     }
   }
-
-    
-  
 
   return (
     <Form {...form}>
@@ -107,7 +114,7 @@ export function LoginForm() {
           name="password"
           render={({ field }) => (
             <FormItem>
-            <h5>Password</h5>
+              <h5>Password</h5>
               <FormControl>
                 <Input type="password" {...field} />
               </FormControl>
@@ -120,6 +127,5 @@ export function LoginForm() {
         </Button>
       </form>
     </Form>
-  )
+  );
 }
-

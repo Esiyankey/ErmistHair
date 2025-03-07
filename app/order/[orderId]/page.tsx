@@ -64,7 +64,22 @@ export default function OrderForm() {
   }
 
   const handleFinalSubmit = () => {
-    // Handle final submission here
+   
+      try{
+        await fetch("http://localhost:3030/api/v1/order/order",{
+          method:"POST",
+          headers:{
+            "Content-Type":" application/json"
+          },
+          body: JSON.stringify(form.getValues()),
+        })
+
+      }catch(){
+        
+      }
+    
+
+
     console.log("Final submission:", formData)
     setShowSummary(false)
   }
@@ -79,7 +94,7 @@ export default function OrderForm() {
           <h1 className="text-3xl font-bold text-white">Ermist Hair</h1>
           <p className="text-white">Custom Wig Order Form</p>
         </div>
-        <form onSubmit={handleSubmit} className="p-6 space-y-6">
+        <form onSubmit={handleFinalSubmit} className="p-6 space-y-6">
             <div>
             <label htmlFor="name" className="block text-sm font-medium text-gray-700">Wig Name</label>
             {wigs?.name}

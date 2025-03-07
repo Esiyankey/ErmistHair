@@ -1,20 +1,20 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
+import { useState, useEffect } from "react";
 
 interface Order {
-  id: string
-  name: string
-  orderDate: string
-  location: string
-  length: string
-  color: string
-  style: string
-  type: string
-  wigType: string
-  deliveryDate: string
-  serviceSpeed: string
-  status: "pending" | "processing" | "completed" | "cancelled"
+  id: string;
+  name: string;
+  orderDate: string;
+  location: string;
+  length: string;
+  color: string;
+  style: string;
+  type: string;
+  wigType: string;
+  deliveryDate: string;
+  serviceSpeed: string;
+  status: "pending" | "processing" | "completed" | "cancelled";
 }
 
 const mockOrders: Order[] = [
@@ -47,41 +47,44 @@ const mockOrders: Order[] = [
     status: "processing",
   },
   // Add more mock orders as needed
-]
+];
 
 export default function AdminOrderPage() {
-  const [orders, setOrders] = useState<Order[]>([])
-  const [filteredOrders, setFilteredOrders] = useState<Order[]>([])
-  const [searchTerm, setSearchTerm] = useState("")
-  const [statusFilter, setStatusFilter] = useState("all")
+  const [orders, setOrders] = useState<Order[]>([]);
+  const [filteredOrders, setFilteredOrders] = useState<Order[]>([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [statusFilter, setStatusFilter] = useState("all");
 
   useEffect(() => {
     // In a real application, you would fetch orders from an API here
-    setOrders(mockOrders)
-    setFilteredOrders(mockOrders)
-  }, [])
+    setOrders(mockOrders);
+    setFilteredOrders(mockOrders);
+  }, []);
 
   useEffect(() => {
     const filtered = orders.filter(
       (order) =>
         (statusFilter === "all" || order.status === statusFilter) &&
-        (order.name.toLowerCase().includes(searchTerm.toLowerCase()) || order.id.includes(searchTerm)),
-    )
-    setFilteredOrders(filtered)
-  }, [orders, searchTerm, statusFilter])
+        (order.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          order.id.includes(searchTerm))
+    );
+    setFilteredOrders(filtered);
+  }, [orders, searchTerm, statusFilter]);
 
   const handleStatusChange = (orderId: string, newStatus: Order["status"]) => {
-    const updatedOrders = orders.map((order) => (order.id === orderId ? { ...order, status: newStatus } : order))
-    setOrders(updatedOrders)
-  }
+    const updatedOrders = orders.map((order) =>
+      order.id === orderId ? { ...order, status: newStatus } : order
+    );
+    setOrders(updatedOrders);
+  };
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(e.target.value)
-  }
+    setSearchTerm(e.target.value);
+  };
 
   const handleFilterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setStatusFilter(e.target.value)
-  }
+    setStatusFilter(e.target.value);
+  };
 
   return (
     <div className="min-h-screen bg-gray-100 py-8 px-4">
@@ -96,13 +99,22 @@ export default function AdminOrderPage() {
             value={searchTerm}
             onChange={handleSearch}
           />
-          <select className="p-2 border rounded w-full md:w-48" value={statusFilter} onChange={handleFilterChange}>
-            <option value="all">All Statuses</option>
-            <option value="pending">Pending</option>
-            <option value="processing">Processing</option>
-            <option value="completed">Completed</option>
-            <option value="cancelled">Cancelled</option>
-          </select>
+          <div className="flex items-center space-x-4">
+            <select
+              className="p-2 border rounded w-full md:w-48"
+              value={statusFilter}
+              onChange={handleFilterChange}
+            >
+              <option value="all">All Statuses</option>
+              <option value="pending">Pending</option>
+              <option value="processing">Processing</option>
+              <option value="completed">Completed</option>
+              <option value="cancelled">Cancelled</option>
+            </select>
+            <div className="p-2 border rounded w-full md:w-48 text-center bg-white">
+              <button>Add new product</button>
+            </div>
+          </div>
         </div>
 
         <div className="bg-white shadow-md rounded-lg overflow-hidden">
@@ -132,7 +144,9 @@ export default function AdminOrderPage() {
             <tbody className="bg-white divide-y divide-gray-200">
               {filteredOrders.map((order) => (
                 <tr key={order.id}>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{order.id}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                    {order.id}
+                  </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                     <div>{order.name}</div>
                     <div className="text-xs">{order.location}</div>
@@ -142,7 +156,9 @@ export default function AdminOrderPage() {
                     <div className="text-xs">{`${order.length}", ${order.color}, ${order.style}`}</div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    <div>{new Date(order.deliveryDate).toLocaleDateString()}</div>
+                    <div>
+                      {new Date(order.deliveryDate).toLocaleDateString()}
+                    </div>
                     <div className="text-xs">{order.serviceSpeed}</div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
@@ -152,10 +168,10 @@ export default function AdminOrderPage() {
                         order.status === "completed"
                           ? "bg-green-100 text-green-800"
                           : order.status === "processing"
-                            ? "bg-yellow-100 text-yellow-800"
-                            : order.status === "cancelled"
-                              ? "bg-red-100 text-red-800"
-                              : "bg-blue-100 text-blue-800"
+                          ? "bg-yellow-100 text-yellow-800"
+                          : order.status === "cancelled"
+                          ? "bg-red-100 text-red-800"
+                          : "bg-blue-100 text-blue-800"
                       }`}
                     >
                       {order.status}
@@ -165,7 +181,12 @@ export default function AdminOrderPage() {
                     <select
                       className="text-indigo-600 hover:text-indigo-900 bg-transparent"
                       value={order.status}
-                      onChange={(e) => handleStatusChange(order.id, e.target.value as Order["status"])}
+                      onChange={(e) =>
+                        handleStatusChange(
+                          order.id,
+                          e.target.value as Order["status"]
+                        )
+                      }
                     >
                       <option value="pending">Pending</option>
                       <option value="processing">Processing</option>
@@ -179,9 +200,10 @@ export default function AdminOrderPage() {
           </table>
         </div>
 
-        {filteredOrders.length === 0 && <div className="text-center py-4 text-gray-500">No orders found</div>}
+        {filteredOrders.length === 0 && (
+          <div className="text-center py-4 text-gray-500">No orders found</div>
+        )}
       </div>
     </div>
-  )
+  );
 }
-
