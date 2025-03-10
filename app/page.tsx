@@ -1,4 +1,4 @@
-import { Landing } from "../components/features/dashboard/landing";
+import { Landing } from "./landing/landing"
 
 export default function Page() {
   

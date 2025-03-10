@@ -58,25 +58,25 @@ export default function OrderForm() {
     setFormData((prev) => ({ ...prev, [name]: value }))
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    setShowSummary(true)
-  }
+  // const handleSubmit = (e: React.FormEvent) => {
+  //   e.preventDefault()
+  //   setShowSummary(true)
+  // }
 
   const handleFinalSubmit = () => {
    
-      try{
-        await fetch("http://localhost:3030/api/v1/order/order",{
-          method:"POST",
-          headers:{
-            "Content-Type":" application/json"
-          },
-          body: JSON.stringify(form.getValues()),
-        })
+      // try{
+      //   await fetch("http://localhost:3030/api/v1/order/order",{
+      //     method:"POST",
+      //     headers:{
+      //       "Content-Type":" application/json"
+      //     },
+      //     body: JSON.stringify(formData),
+      //   })
 
-      }catch(){
+      // }catch(){
         
-      }
+      // }
     
 
 

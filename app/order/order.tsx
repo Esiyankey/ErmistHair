@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import React, { useState } from "react"
 
 const wigTypes = ["Full Lace Wig", "Lace Front Wig", "U-Part Wig", "360 Lace Wig", "Glueless Wig", "HD Lace Wig"]
 

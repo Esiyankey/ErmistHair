@@ -6,7 +6,7 @@ import { FaBars, FaTimes, FaShoppingCart } from "react-icons/fa";
 
 const navLinks = [
   { href: "/admin", label: "Shop All" },
-  { href: "/orders", label: "orders" },
+  { href: "/order/orderHistory", label: "orders" },
   { href: "/styles", label: "Styles" },
   { href: "/care", label: "Wig Care" },
   { href: "/faq", label: "FAQ" },

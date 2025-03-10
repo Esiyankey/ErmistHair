@@ -4,8 +4,9 @@ import { LiaAngleRightSolid } from "react-icons/lia";
 import { FaHome } from "react-icons/fa";
 import Link from "next/link";
 import { FaShoppingCart } from "react-icons/fa";
-import { wigsArivals, wigsData, Testimonial } from "../../data/wigs.js";
-import { useState, useEffect, useRef } from "react";
+import { wigsArivals, wigsData, Testimonial } from "../../components/data/wigs";
+import { useState, useEffect, useRef } from "react"
+
 import {
   FaAngleRight,
   FaRegHeart,
@@ -24,7 +25,7 @@ import Autoplay from "embla-carousel-autoplay";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { IoIosStarOutline } from "react-icons/io";
-import  {Footer}  from "../../layout/footer";
+import  {Footer}  from "../../components/layout/footer";
 
 
 interface HeroSlide {
