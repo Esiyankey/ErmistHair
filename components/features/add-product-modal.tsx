@@ -24,10 +24,10 @@ import { useForm } from "react-hook-form"
 import * as z from "zod"
 
 const formSchema = z.object({
-  name: z.string().min(2, {
+  productName: z.string().min(2, {
     message: "Product name must be at least 2 characters.",
   }),
-  price: z.coerce.number().positive({
+  productPrice: z.coerce.number().positive({
     message: "Price must be a positive number.",
   }),
   hairType: z.enum(["frontal", "closure"], {
@@ -39,7 +39,7 @@ const formSchema = z.object({
   hairLength: z.coerce.number().positive({
     message: "Hair length must be a positive number.",
   }),
-  image: z.instanceof(File).optional(),
+  productImage: z.instanceof(File).optional(),
 })
 
 type ProductFormValues = z.infer<typeof formSchema>
@@ -52,8 +52,8 @@ export function AddProductModal() {
   const form = useForm<ProductFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
-      price: undefined,
+      productName: "",
+      productPrice: undefined,
       hairType: undefined,
       hairColor: "",
       hairLength: undefined,
@@ -86,7 +86,7 @@ export function AddProductModal() {
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (file) {
-      form.setValue("image", file)
+      form.setValue("productImage", file)
       const reader = new FileReader()
       reader.onloadend = () => {
         setImagePreview(reader.result as string)
@@ -96,7 +96,7 @@ export function AddProductModal() {
   }
 
   const clearImage = () => {
-    form.setValue("image", undefined)
+    form.setValue("productImage", undefined)
     setImagePreview(null)
     const fileInput = document.getElementById("image-upload") as HTMLInputElement
     if (fileInput) fileInput.value = ""
@@ -118,7 +118,7 @@ export function AddProductModal() {
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <FormField
               control={form.control}
-              name="name"
+              name="productName"
               render={({ field }) => (
                 <FormItem>
                   <label>Product Name</label>
@@ -132,7 +132,7 @@ export function AddProductModal() {
 
             <FormField
               control={form.control}
-              name="price"
+              name="productPrice"
               render={({ field }) => (
                 <FormItem>
                   <label>Price ($)</label>

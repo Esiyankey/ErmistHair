@@ -1,7 +1,6 @@
 "use client";
 
 import { AddProductModal } from "@/components/features/add-product-modal";
-import Link from "next/link";
 import { useState, useEffect } from "react";
 
 interface Order {
