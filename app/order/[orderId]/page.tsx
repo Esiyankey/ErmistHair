@@ -40,16 +40,16 @@ export default function OrderForm() {
 
 
   const [formData, setFormData] = useState({
-    name: "",
+    customerName: "",
     orderDate: new Date().toISOString().split("T")[0],
     location: "",
     length: "",
     color: "",
-    style: "",
-    type: "",
+    styleType: "",
+    frontalType: "",
     wigType: "",
     deliveryDate: "",
-    serviceSpeed: "normal",
+    serviceType: "normal",
   })
   const [showSummary, setShowSummary] = useState(false)
 
@@ -58,31 +58,43 @@ export default function OrderForm() {
     setFormData((prev) => ({ ...prev, [name]: value }))
   }
 
-  // const handleSubmit = (e: React.FormEvent) => {
-  //   e.preventDefault()
-  //   setShowSummary(true)
-  // }
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    console.log(formData)
+    console.log("review order clicked")
+    setShowSummary(true)
+  }
 
-  const handleFinalSubmit = () => {
+  const handleFinalSubmit = async() => {
    
-      // try{
-      //   await fetch("http://localhost:3030/api/v1/order/order",{
-      //     method:"POST",
-      //     headers:{
-      //       "Content-Type":" application/json"
-      //     },
-      //     body: JSON.stringify(formData),
-      //   })
-
-      // }catch(){
-        
-      // }
-    
+  const isValid = Object.values(formData).every(value => value !== "" && value !== undefined);
+  if (!isValid) {
+    alert("Please fill out all required fields before submitting.");
+  }
+try{
 
 
+  const response = await fetch("http://localhost:3030/api/v1/order/order", {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+    },
+    body: JSON.stringify(formData),
+  });
+
+  const data = await response.json(); // Parse response
+    console.log("Server response:", data); // Log full response
+
+    if (!response.ok) {
+      throw new Error(data.message || "Failed to submit order");
+    }
     console.log("Final submission:", formData)
     setShowSummary(false)
+}
+catch(error) {
+ console.error("An unexpected error occurred:", error)
   }
+}
 
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4">
@@ -94,22 +106,22 @@ export default function OrderForm() {
           <h1 className="text-3xl font-bold text-white">Ermist Hair</h1>
           <p className="text-white">Custom Wig Order Form</p>
         </div>
-        <form onSubmit={handleFinalSubmit} className="p-6 space-y-6">
+        <form onSubmit={handleSubmit} className="p-6 space-y-6">
             <div>
             <label htmlFor="name" className="block text-sm font-medium text-gray-700">Wig Name</label>
             {wigs?.name}
             </div>
           <div>
-            <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+            <label htmlFor="customerName" className="block text-sm font-medium text-gray-700">
               Customer Name
             </label>
             <input
               type="text"
-              id="name"
-              name="name"
+              id="customerName"
+              name="customerName"
               required
               className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
-              value={formData.name}
+              value={formData.customerName}
               onChange={handleChange}
             />
           </div>
@@ -178,21 +190,21 @@ export default function OrderForm() {
           </div>
 
           <div>
-            <label htmlFor="style" className="block text-sm font-medium text-gray-700">
+            <label htmlFor="styleType" className="block text-sm font-medium text-gray-700">
               Style
             </label>
             <select
-              id="style"
-              name="style"
+              id="styleType"
+              name="styleType"
               required
               className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
-              value={formData.style}
+              value={formData.styleType}
               onChange={handleChange}
             >
               <option value="">Select style</option>
-              {wigStyles.map((style) => (
-                <option key={style} value={style.toLowerCase()}>
-                  {style}
+              {wigStyles.map((styleType) => (
+                <option key={styleType} value={styleType.toLowerCase()}>
+                  {styleType}
                 </option>
               ))}
             </select>
@@ -203,11 +215,11 @@ export default function OrderForm() {
               Frontal or Closure
             </label>
             <select
-              id="type"
-              name="type"
+              id="frontalType"
+              name="frontalType"
               required
               className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
-              value={formData.type}
+              value={formData.frontalType}
               onChange={handleChange}
             >
               <option value="">Select type</option>
@@ -254,15 +266,15 @@ export default function OrderForm() {
           </div>
 
           <div>
-            <label htmlFor="serviceSpeed" className="block text-sm font-medium text-gray-700">
+            <label htmlFor="serviceType" className="block text-sm font-medium text-gray-700">
               Service Speed
             </label>
             <select
-              id="serviceSpeed"
-              name="serviceSpeed"
+              id="serviceType"
+              name="serviceType"
               required
               className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
-              value={formData.serviceSpeed}
+              value={formData.serviceType}
               onChange={handleChange}
             >
               <option value="normal">Normal</option>

@@ -31,8 +31,10 @@ export default function OrderForm() {
     setShowSummary(true)
   }
 
-  const handleFinalSubmit = () => {
-    // Handle final submission here
+
+  
+  const handleFinalSubmit =async () => {
+   
     console.log("Final submission:", formData)
     setShowSummary(false)
   }
@@ -44,7 +46,7 @@ export default function OrderForm() {
           <h1 className="text-3xl font-bold text-white">Ermist Hair</h1>
           <p className="text-white">Custom Wig Order Form</p>
         </div>
-        <form onSubmit={handleSubmit} className="p-6 space-y-6">
+        <form  className="p-6 space-y-6">
           <div>
             <label htmlFor="name" className="block text-sm font-medium text-gray-700">
               Customer Name
@@ -219,6 +221,7 @@ export default function OrderForm() {
           <button
             type="submit"
             className="w-full bg-[#e75e8d] text-white py-2 px-4 rounded-md hover:bg-[#d54d7c] transition duration-300"
+              onClick={handleSubmit}
           >
             Review Order
           </button>
