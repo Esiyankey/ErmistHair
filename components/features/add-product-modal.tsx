@@ -27,6 +27,9 @@ const formSchema = z.object({
   productName: z.string().min(2, {
     message: "Product name must be at least 2 characters.",
   }),
+  category: z.string().min(2, {
+    message: "Product category must be at least 2 characters.",
+  }),
   productPrice: z.coerce.number().positive({
     message: "Price must be a positive number.",
   }),
@@ -53,10 +56,12 @@ export function AddProductModal() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       productName: "",
+      category:undefined,
       productPrice: undefined,
       hairType: undefined,
       hairColor: "",
       hairLength: undefined,
+      productImage: undefined,
     },
   })
 
@@ -124,6 +129,19 @@ export function AddProductModal() {
                   <label>Product Name</label>
                   <FormControl>
                     <Input placeholder="Brazilian Straight Hair" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+             <FormField
+              control={form.control}
+              name="category"
+              render={({ field }) => (
+                <FormItem>
+                  <label>Category</label>
+                  <FormControl>
+                    <Input placeholder="invisible" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
