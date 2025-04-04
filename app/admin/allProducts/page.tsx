@@ -27,8 +27,10 @@ export default function AdminPage() {
     <div className="container mx-auto p-4">
       <h1 className="text-3xl font-bold mb-4">Wig Admin Dashboard</h1>
 
-      <div className="mb-4 flex gap-4 mt-12">
-        <h2 className="text-xl font-semibold mb-2">All Wigs</h2>
+      <div className="mb-8 flex gap-4 mt-12 justify-between items-center">
+        <div>
+          <h2 className="text-xl font-semibold ">All Wigs</h2>
+        </div>
         <div>
           <AddProductModal />
         </div>

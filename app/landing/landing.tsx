@@ -26,7 +26,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { IoIosStarOutline } from "react-icons/io";
 import  {Footer}  from "../../components/layout/footer";
-
+import { useDispatch, useSelector } from "react-redux";
+import { fetchProducts } from "@/store/slice/productSLice";
+import { AppDispatch, RootState } from "@/store/store";
 
 interface HeroSlide {
   image: string;
@@ -75,7 +77,6 @@ export const Landing = () => {
   const [wigs, setWigs] = useState(wigsData);
   const [wigArrival, setWigArrival] = useState<wigArivals[]>(wigsArivals);
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
-  const [filteredWigs, setFilteredWigs] = useState(wigsData); // Store filtered data
   const plugin = useRef(Autoplay({ delay: 5000, stopOnInteraction: true }));
   const [startIndex, setStartIndex] = useState(0);
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -83,7 +84,17 @@ export const Landing = () => {
 
 
 
-  const handleCount =(id:number)=>{
+   const dispatch: AppDispatch = useDispatch();
+    const { products } = useSelector(
+      (state: RootState) => state.products
+    );
+  
+    useEffect(() => {
+      dispatch(fetchProducts());
+    }, [dispatch]);
+  
+
+  const handleCount =(id:string)=>{
     setCounts(prevCounts =>(
       {
         ...prevCounts,
@@ -92,9 +103,7 @@ export const Landing = () => {
     ) )
   }
 
-  // const getTotalCount = () => {
-  //   return Object.values(counts).reduce((total, count) => total + count, 0);
-  // };
+
 
   const nextSlide = () => {
     setStartIndex((prev) => (prev + 1) % wigs.length);
@@ -148,16 +157,6 @@ export const Landing = () => {
   useEffect(() => {
     setWigArrival(wigsArivals);
     setTestimonials(Testimonial);
-
-    let newFilteredWigs: typeof wigsData = [];
-    if (activeButton === 1) {
-      newFilteredWigs = wigs;
-    } else if (activeButton === 2) {
-      newFilteredWigs = wigs.filter((wig) => wig.category === "invisible");
-    } else if (activeButton === 3) {
-      newFilteredWigs = wigs.filter((wig) => wig.category === "glueless");
-    }
-    setFilteredWigs(newFilteredWigs); // Update the filtered state
     setWigs(wigsData); // Reset the wigs state
   }, [activeButton]);
 
@@ -282,12 +281,12 @@ export const Landing = () => {
         </div>
 
         <div className="md:my-12 my-6 grid grid-cols-1 justify-center place-items-center md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-          {filteredWigs.map((wig) => {
+          {products.map((wig) => {
             return (
-              <Card className="md:w-72 w-96" key={wig.id}>
+              <Card className="md:w-72 w-96" key={wig.productId}>
                 <CardHeader className="overflow-hidden h-60">
                   <Image
-                    src={wig.image}
+                    src={`http://localhost:3030/${wig.productImage}`}
                     alt="image here"
                     width={240}
                     height={250}
@@ -296,28 +295,28 @@ export const Landing = () => {
                 </CardHeader>
                 <CardContent className="">
                   <div className="flex justify-between items-center">
-                    <h1 className="">{wig.name}</h1>
+                    <h1 className="">{wig.productName}</h1>
                     <h1>
-                      $<span>{wig.price}</span>
+                      $<span>{wig.productPrice}</span>
                     </h1>
                   </div>
                   <div className="grid grid-cols-2  gap-2 my-4 text-sm">
-                    <p>{wig.length}inches</p>
-                    <p className=" text-end">{wig.type}</p>
-                    <p>{wig.color}</p>
-                    <p className="text-end">{wig.material}</p>
+                    <p>{wig.hairLength}inches</p>
+                    <p className=" text-end">{wig.hairType}</p>
+                    <p>{wig.hairColor}</p>
+                    <p className="text-end">Luxury</p>
                   </div>
                   <div className=" my-4 flex justify-between items-center">
                     <button
                       className="flex items-center text-black  transition-colors"
-                      onClick={()=>handleCount(wig.id)}
+                      onClick={()=>handleCount(wig.productId)}
                     >
                       <FaShoppingCart className="h-4 w-4 mr-1 text-pink-600" />
                       <span className="text-xs">Add to Cart</span>
-                      <div className="h-6 w-6 border rounded-full ml-2 flex justify-center items-center"> {counts[wig.id]||0}</div>
+                      <div className="h-6 w-6 border rounded-full ml-2 flex justify-center items-center"> {counts[wig.productId]||0}</div>
                     </button>
 
-                    <Link href={`/order/${wig.id}`}>
+                    <Link href={`/order/${wig.productId}`}>
                     <Button
                       size="sm"
                       className=" bg-pink-600"
