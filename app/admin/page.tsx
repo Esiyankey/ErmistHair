@@ -1,6 +1,6 @@
 "use client";
 
-import { AddProductModal } from "@/components/features/add-product-modal";
+
 import { useState, useEffect } from "react";
 
 interface Order {
@@ -112,9 +112,7 @@ export default function AdminOrderPage() {
               <option value="completed">Completed</option>
               <option value="cancelled">Cancelled</option>
             </select>
-            <div>
-             <AddProductModal/>
-            </div>
+            
           </div>
         </div>
 

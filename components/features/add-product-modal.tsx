@@ -1,12 +1,12 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState } from "react"
-import { Plus, Upload, X } from "lucide-react"
-import Image from "next/image"
+import { useState } from "react";
+import { Plus, Upload, X } from "lucide-react";
+import Image from "next/image";
 
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -15,13 +15,26 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
-import { Form, FormControl, FormDescription, FormField, FormItem,FormMessage } from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import * as z from "zod"
+} from "@/components/ui/dialog";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
 
 const formSchema = z.object({
   productName: z.string().min(2, {
@@ -43,69 +56,83 @@ const formSchema = z.object({
     message: "Hair length must be a positive number.",
   }),
   productImage: z.instanceof(File).optional(),
-})
+});
 
-type ProductFormValues = z.infer<typeof formSchema>
+type ProductFormValues = z.infer<typeof formSchema>;
 
 export function AddProductModal() {
-  const [open, setOpen] = useState(false)
-  const [imagePreview, setImagePreview] = useState<string | null>(null)
-    const [isLoading, setIsLoading] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm<ProductFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       productName: "",
-      category:undefined,
-      productPrice: undefined,
-      hairType: undefined,
+      category: "",
+      productPrice: 0,
+      hairType: "frontal",
       hairColor: "",
-      hairLength: undefined,
+      hairLength: 0,
       productImage: undefined,
     },
-  })
+  });
 
   async function onSubmit(values: ProductFormValues) {
-    console.log(values)
-   try{
-    const postProduct = await fetch("http://localhost:3030/api/v1/product/addProduct",{
-        method:"POST",
-        headers:{
-            "content-type":"application/json",
-        },
-        body:JSON.stringify(values)
-    })
+    console.log(values);
+    const formData = new FormData();
 
-    const data = postProduct.json()
-    console.log(data)
-   }catch(error) {
-    console.error("An unexpected error occurred:", error)
-  } finally {
-    setIsLoading(false);
-  }
-    form.reset()
-    setImagePreview(null)
-    setOpen(false)
+    formData.append("productName", values.productName);
+    formData.append("category", values.category);
+    formData.append("productPrice", values.productPrice.toString());
+    formData.append("hairType", values.hairType);
+    formData.append("hairColor", values.hairColor);
+    formData.append("hairLength", values.hairLength.toString());
+
+    if (values.productImage) {
+      formData.append("productImage", values.productImage);
+    }
+    try {
+      const postProduct = await fetch(
+        "http://localhost:3030/api/v1/product/addProduct",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+
+      const data =await postProduct.json();
+      console.log(data);
+    } catch (error) {
+      console.error("An unexpected error occurred:", error);
+    } finally {
+      setIsLoading(false);
+    }
+    form.reset();
+    setImagePreview(null);
+    setOpen(false);
   }
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
+    const file = e.target.files?.[0];
     if (file) {
-      form.setValue("productImage", file)
-      const reader = new FileReader()
+      form.setValue("productImage", file);
+      const reader = new FileReader();
       reader.onloadend = () => {
-        setImagePreview(reader.result as string)
-      }
-      reader.readAsDataURL(file)
+        setImagePreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
     }
-  }
+  };
 
   const clearImage = () => {
-    form.setValue("productImage", undefined)
-    setImagePreview(null)
-    const fileInput = document.getElementById("image-upload") as HTMLInputElement
-    if (fileInput) fileInput.value = ""
-  }
+    form.setValue("productImage", undefined);
+    setImagePreview(null);
+    const fileInput = document.getElementById(
+      "image-upload"
+    ) as HTMLInputElement;
+    if (fileInput) fileInput.value = "";
+  };
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -117,7 +144,9 @@ export function AddProductModal() {
       <DialogContent className="sm:max-w-[500px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Add New Hair Product</DialogTitle>
-          <DialogDescription>Fill in the details to add a new hair product to your inventory.</DialogDescription>
+          <DialogDescription>
+            Fill in the details to add a new hair product to your inventory.
+          </DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -134,15 +163,27 @@ export function AddProductModal() {
                 </FormItem>
               )}
             />
-             <FormField
+
+            <FormField
               control={form.control}
               name="category"
               render={({ field }) => (
                 <FormItem>
                   <label>Category</label>
-                  <FormControl>
-                    <Input placeholder="invisible" {...field} />
-                  </FormControl>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select Category" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="frontal">invisible</SelectItem>
+                      <SelectItem value="closure">glueless</SelectItem>
+                    </SelectContent>
+                  </Select>
                   <FormMessage />
                 </FormItem>
               )}
@@ -168,7 +209,10 @@ export function AddProductModal() {
               render={({ field }) => (
                 <FormItem>
                   <label>Hair Type</label>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="Select hair type" />
@@ -234,8 +278,8 @@ export function AddProductModal() {
                           size="icon"
                           className="absolute top-1 right-1 h-6 w-6 rounded-full bg-white"
                           onClick={(e) => {
-                            e.stopPropagation()
-                            clearImage()
+                            e.stopPropagation();
+                            clearImage();
                           }}
                         >
                           <X className="h-4 w-4" />
@@ -257,20 +301,28 @@ export function AddProductModal() {
                   />
                 </div>
               </FormControl>
-              <FormDescription>Upload a clear image of the product.</FormDescription>
+              <FormDescription>
+                Upload a clear image of the product.
+              </FormDescription>
               <FormMessage />
             </FormItem>
 
             <DialogFooter>
-              <Button type="button" variant="outline" onClick={() => setOpen(false)}>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setOpen(false)}
+              >
                 Cancel
               </Button>
-              <Button type="submit"> {isLoading ? "submitting" : "Submit"}</Button>
+              <Button type="submit">
+                {" "}
+                {isLoading ? "submitting" : "Submit"}
+              </Button>
             </DialogFooter>
           </form>
         </Form>
       </DialogContent>
     </Dialog>
-  )
+  );
 }
-
