@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 
 
 
-export default function OrderDetailsPage({ params }: { params: { id: string } }) {
+export default function OrderDetailsPage() {
   // In a real app, you would fetch the order details using the ID
   // const { id } = params;
 

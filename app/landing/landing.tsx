@@ -317,14 +317,14 @@ export const Landing = () => {
                     </button>
 
                     <Link href={`/order/${wig.productId}`}>
-                    <Button
+                    {/* <Button
                       size="sm"
                       className=" bg-pink-600"
                       onClick={() => {}}
-                    >
-                      {" "}
+                    > */}
+                     
                       Order
-                    </Button>
+                    {/* </Button> */}
                     </Link>
                   </div>
                 </CardContent>

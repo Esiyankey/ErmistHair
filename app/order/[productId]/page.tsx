@@ -3,9 +3,11 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { useParams } from "next/navigation";
-import { wigsData } from "@/components/data/wigs";
 import { IoIosArrowRoundBack } from "react-icons/io";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchProducts } from "@/store/slice/productSLice";
+import { AppDispatch, RootState } from "@/store/store";
+import { useParams } from "next/navigation";
 import Link from "next/link";
 
 const wigTypes = ["Full Lace Wig", "Lace Front Wig", "U-Part Wig", "360 Lace Wig", "Glueless Wig", "HD Lace Wig"]
@@ -13,33 +15,27 @@ const wigTypes = ["Full Lace Wig", "Lace Front Wig", "U-Part Wig", "360 Lace Wig
 const wigStyles = ["Straight", "Body Wave", "Deep Wave", "Loose Wave", "Kinky Straight", "Curly"]
 
 export default function OrderForm() {
-    const [wigs, setWigs] = useState<{
-        id: number;
-        name: string;
-        price: number;
-        length: number;
-        type: string;
-        color: string;
-        material: string;
-        image: string;
-        category: string;
-    } | undefined>(undefined);
-    const { orderId } = useParams();
-    console.log(orderId);
+  
+  
 
-    useEffect(() => {
-        console.log(wigsData);
-        wigsData.map((wig) => {
-            if(wig.id === Number(orderId)){
-                setWigs(wig);
-                console.log(wig);
-            }
-        });
+  const dispatch: AppDispatch = useDispatch();
+  const { products } = useSelector(
+    (state: RootState) => state.products
+  );
 
-    });
+useEffect(() => {
+    dispatch(fetchProducts());
+  }, [dispatch]);
+
+    const params = useParams()
+    const productId = params.productId as string;
+    console.log(productId);
+    const product = products.find((product) => product.productId === productId);
+    console.log(`the product name is ${product?.productName}`);
 
 
   const [formData, setFormData] = useState({
+    productId:productId,
     customerName: "",
     orderDate: new Date().toISOString().split("T")[0],
     location: "",
@@ -109,7 +105,7 @@ catch(error) {
         <form onSubmit={handleSubmit} className="p-6 space-y-6">
             <div>
             <label htmlFor="name" className="block text-sm font-medium text-gray-700">Wig Name</label>
-            {wigs?.name}
+            {product?.productName}
             </div>
           <div>
             <label htmlFor="customerName" className="block text-sm font-medium text-gray-700">
